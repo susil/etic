@@ -1,4 +1,4 @@
-singpro
+ETIC
 =======
 This is a sample project that shows how Neo4J NoSql repository can be effectively used withi spring-data module.
 Below are some of the hightlights of things that this project shows;
