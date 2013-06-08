@@ -44,21 +44,21 @@ public class DomainTests {
 
     //@Test
     public void systemIsAProducer() {
-    	System advance = new System();
-    	advance.setId("1");
-    	advance.setTitle("Advance");
-    	advance.setDescription("Faculty Information System");
-        advance = template.save(advance);
+    	System system1 = new System();
+    	system1.setId("1");
+    	system1.setTitle("System1");
+    	system1.setDescription("Faculty Information System");
+        system1 = template.save(system1);
         
-    	System mpm = new System();
-    	mpm.setId("2");
-    	mpm.setTitle("mpm");
-    	mpm.setDescription("PAF");
-    	mpm = template.save(mpm);
+    	System System2 = new System();
+    	System2.setId("2");
+    	System2.setTitle("System2");
+    	System2.setDescription("System2");
+    	System2 = template.save(System2);
     	
-    	Produce produce= advance.produce( template, mpm, "FISData");
-    	//System.out.println(advance.getDescription());
-    	//#//advance.addProducelist(produce);
+    	Produce produce= system1.produce( template, System2, "FISData");
+    	//System.out.println(system1.getDescription());
+    	//#//system1.addProducelist(produce);
     	template.save(produce);
 
         System adv1 = systemRepository.findById("1");
@@ -71,26 +71,26 @@ public class DomainTests {
 
     //@Test
     public void systemIsAConsumer() {
-    	System advance = new System();
-    	advance.setId("1");
-    	advance.setTitle("Advance");
-    	advance.setDescription("Faculty Information System");
-        advance = template.save(advance);
+    	System system1 = new System();
+    	system1.setId("1");
+    	system1.setTitle("System1");
+    	system1.setDescription(" Information System");
+        system1 = template.save(system1);
         
-    	System mpm = new System();
-    	mpm.setId("2");
-    	mpm.setTitle("mpm");
-    	mpm.setDescription("PAF");
-    	mpm = template.save(mpm);
+    	System System2 = new System();
+    	System2.setId("2");
+    	System2.setTitle("System2");
+    	System2.setDescription("System2");
+    	System2 = template.save(System2);
     	
-    	Consume consume= advance.consume( template, mpm, "FFP Report");
-    	//System.out.println(advance.getDescription());
-    	//#//advance.addProducelist(produce);
+    	Consume consume= system1.consume( template, System2, "a1 Report");
+    	//System.out.println(system1.getDescription());
+    	//#//system1.addProducelist(produce);
     	template.save(consume);
 
         System adv1 = systemRepository.findById("1");
         Consume consume1 = adv1.getConsumelist().iterator().next();
-        assertEquals("FFP Report",consume1.getDatasetname());
+        assertEquals("a1 Report",consume1.getDatasetname());
         
 
     }    
@@ -100,27 +100,27 @@ public class DomainTests {
     public void isConsumerFromMulltipleProducers() {
     	java.lang.System.out.println("isConsumerFromMulltipleProducers...");
 
-    	System advance = new System();
-    	advance.setId("1");
-    	advance.setTitle("Advance");
-    	advance.setDescription("Faculty Information System");
-        advance = template.save(advance);
+    	System system1 = new System();
+    	system1.setId("1");
+    	system1.setTitle("System1");
+    	system1.setDescription(" Information System");
+        system1 = template.save(system1);
         
-    	System mpm = new System();
-    	mpm.setId("2");
-    	mpm.setTitle("mpm");
-    	mpm.setDescription("PAF");
-    	mpm = template.save(mpm);
+    	System System2 = new System();
+    	System2.setId("2");
+    	System2.setTitle("System2");
+    	System2.setDescription("System2");
+    	System2 = template.save(System2);
     	
-    	System senatservice = new System();
-    	senatservice.setId("3");
-    	senatservice.setTitle("SenateService");
-    	senatservice.setDescription("SenateService Descr");
-    	senatservice = template.save(mpm);
+    	System s5 = new System();
+    	s5.setId("3");
+    	s5.setTitle("system5");
+    	s5.setDescription("system5 Descr");
+    	s5 = template.save(System2);
     	
-    	Consume consume= advance.consume( template, mpm, "FFP Report");
+    	Consume consume= system1.consume( template, System2, "a1 Report");
     	template.save(consume);
-    	consume= advance.consume( template, senatservice, "FacultyGeneral");
+    	consume= system1.consume( template, s5, "General");
     	template.save(consume);
     	
     	
@@ -141,36 +141,36 @@ public class DomainTests {
     public void isProducerForMulltipleConsumers() {
     	java.lang.System.out.println("isProducerForMulltipleConsumers...");
     	
-    	System advance = new System();
-    	advance.setId("1");
-    	advance.setTitle("Advance");
-    	advance.setDescription("Faculty Information System");
-        advance = template.save(advance);
+    	System system1 = new System();
+    	system1.setId("1");
+    	system1.setTitle("System1");
+    	system1.setDescription("Faculty Information System");
+        system1 = template.save(system1);
         
-        java.lang.System.out.println("advance.nodeId->..."+advance.nodeId);
+        java.lang.System.out.println("system1.nodeId->..."+system1.nodeId);
         
-    	System mpm = new System();
-    	mpm.setId("2");
-    	mpm.setTitle("mpm");
-    	mpm.setDescription("PAF");
-    	mpm = template.save(mpm);
+    	System System2 = new System();
+    	System2.setId("2");
+    	System2.setTitle("System2");
+    	System2.setDescription("System2");
+    	System2 = template.save(System2);
 
-        java.lang.System.out.println("mpm.nodeId->..."+mpm.nodeId);
+        java.lang.System.out.println("System2.nodeId->..."+System2.nodeId);
 
         
-    	Produce produce= advance.produce( template, mpm, "Faculty CV from Advance");
-    	//advance = template.save(advance);
+    	Produce produce= system1.produce( template, System2, "...from System1");
+    	//system1 = template.save(system1);
     	template.save(produce);
 
-    	System senatservice = new System();
-    	senatservice.setId("3");
-    	senatservice.setTitle("SenateService");
-    	senatservice.setDescription("SenateService Descr");
-    	senatservice = template.save(senatservice);
-    	java.lang.System.out.println("senatservice.nodeId->..."+senatservice.nodeId);
+    	System s5 = new System();
+    	s5.setId("3");
+    	s5.setTitle("system5");
+    	s5.setDescription("system5 Descr");
+    	s5 = template.save(s5);
+    	java.lang.System.out.println("s5.nodeId->..."+s5.nodeId);
     	
-    	Produce produce1= advance.produce( template, senatservice, "FacultyGeneral form Advance");
-    	//advance = template.save(advance);
+    	Produce produce1= system1.produce( template, s5, "General form System1");
+    	//system1 = template.save(system1);
     	template.save(produce1);
     	
     	System adv1 = systemRepository.findById("1");
@@ -228,42 +228,42 @@ public class DomainTests {
     public void isProducerForMulltipleConsumers2() {
     	java.lang.System.out.println("isProducerForMulltipleConsumers...2");
     	
-    	System advance = new System();
-    	advance.setId("1");
-    	advance.setTitle("Advance");
-    	advance.setDescription("Faculty Information System");
-        advance = template.save(advance);
+    	System system1 = new System();
+    	system1.setId("1");
+    	system1.setTitle("System1");
+    	system1.setDescription(" Information System");
+        system1 = template.save(system1);
         
-        java.lang.System.out.println("advance.nodeId->..."+advance.nodeId);
+        java.lang.System.out.println("system1.nodeId->..."+system1.nodeId);
         
-    	System mpm = new System();
-    	mpm.setId("2");
-    	mpm.setTitle("mpm");
-    	mpm.setDescription("PAF");
-    	mpm = template.save(mpm);
+    	System System2 = new System();
+    	System2.setId("2");
+    	System2.setTitle("System2");
+    	System2.setDescription("System2");
+    	System2 = template.save(System2);
 
-        java.lang.System.out.println("mpm.nodeId->..."+mpm.nodeId);
+        java.lang.System.out.println("System2.nodeId->..."+System2.nodeId);
 
         
-    	Produce produce= advance.produce( template, mpm, "Faculty CV from Advance");
-    	//advance = template.save(advance);
+    	Produce produce= system1.produce( template, System2, "INfo System1");
+    	//system1 = template.save(system1);
     	template.save(produce);
 
-    	Produce mpmProduce = mpm.produce(template, advance, "FFP Report");
-    	template.save(mpmProduce);
+    	Produce System2Produce = System2.produce(template, system1, "a1 Report");
+    	template.save(System2Produce);
     	
-    	System senatservice = new System();
-    	senatservice.setId("3");
-    	senatservice.setTitle("SenateService");
-    	senatservice.setDescription("SenateService Descr");
-    	senatservice = template.save(senatservice);
-    	java.lang.System.out.println("senatservice.nodeId->..."+senatservice.nodeId);
+    	System s5 = new System();
+    	s5.setId("3");
+    	s5.setTitle("system5");
+    	s5.setDescription("system5 Descr");
+    	s5 = template.save(s5);
+    	java.lang.System.out.println("s5.nodeId->..."+s5.nodeId);
     	
-    	Produce produce1= advance.produce( template, senatservice, "FacultyGeneral form Advance");
+    	Produce produce1= system1.produce( template, s5, "General form System1");
     	template.save(produce1);
 
-    	mpmProduce = mpm.produce(template, senatservice, "FFP Report");
-    	template.save(mpmProduce);
+    	System2Produce = System2.produce(template, s5, "a1 Report");
+    	template.save(System2Produce);
     	
     	
     	System adv1 = systemRepository.findById("1");
@@ -287,12 +287,12 @@ public class DomainTests {
     	}
 
     	adv1 = null;
-    	//System mpmSystem = systemRepository.findById("2");
+    	//System System2System = systemRepository.findById("2");
     	adv1 =systemRepository.findById("2");
     	java.lang.System.out.println("adv1 ="+adv1.getDescription());
-     	List<Produce> mpmConsumers = systemRepository.getAllProduceRelationWhereSystemIsProducer( adv1 );
-     	java.lang.System.out.println("\n\n\n 2 mpmConsumers.size()="+mpmConsumers.size());
-    	for ( Produce SystemTemp1 : mpmConsumers) {
+     	List<Produce> System2Consumers = systemRepository.getAllProduceRelationWhereSystemIsProducer( adv1 );
+     	java.lang.System.out.println("\n\n\n 2 System2Consumers.size()="+System2Consumers.size());
+    	for ( Produce SystemTemp1 : System2Consumers) {
     		
     		java.lang.System.out.println(SystemTemp1.getDatasetname());
     		
@@ -306,7 +306,7 @@ public class DomainTests {
 	   		java.lang.System.out.println("consumerSystem->..."+consumerSystem.getId() + ":" + consumerSystem.getDescription());
    	}
      	
-     	java.lang.System.out.println("\n\n\nIterating...mpmSystem");
+     	java.lang.System.out.println("\n\n\nIterating...System2System");
      	
     	Iterable<Produce> produceList = adv1.getProducelist();
     	for ( Produce produceTemp : produceList) {
@@ -320,18 +320,18 @@ public class DomainTests {
 
     	}
     	
-    	//System mpmTestSystem = systemRepository.findSystemById("2");
-     	//java.lang.System.out.println("\n\n\nIterating...mpmTestSystem");
+    	//System System2TestSystem = systemRepository.findSystemById("2");
+     	//java.lang.System.out.println("\n\n\nIterating...System2TestSystem");
      	
-     	//java.lang.System.out.println("getId="+ mpmTestSystem.getId());
-     	//java.lang.System.out.println("getDescription="+ mpmTestSystem.getDescription());
-     	//java.lang.System.out.println("getProducelist().size()="+ mpmTestSystem.getProducelist().size());
+     	//java.lang.System.out.println("getId="+ System2TestSystem.getId());
+     	//java.lang.System.out.println("getDescription="+ System2TestSystem.getDescription());
+     	//java.lang.System.out.println("getProducelist().size()="+ System2TestSystem.getProducelist().size());
      	
     	 //List<Produce> findProducerId("2");	
     	java.lang.System.out.println("\n\n\n ...");
-      	List<Produce> mpmConsumers2 = systemRepository.getProducers( "2");
-      	java.lang.System.out.println("\n\n\n mpmConsumers2.size()="+mpmConsumers2.size());
-     	for ( Produce SystemTemp : mpmConsumers2) {
+      	List<Produce> System2Consumers2 = systemRepository.getProducers( "2");
+      	java.lang.System.out.println("\n\n\n System2Consumers2.size()="+System2Consumers2.size());
+     	for ( Produce SystemTemp : System2Consumers2) {
      		
      		java.lang.System.out.println(SystemTemp.getDatasetname());
      		
@@ -347,9 +347,9 @@ public class DomainTests {
     	 
  
     	java.lang.System.out.println("\n\n\n ...");
-      	mpmConsumers2 = systemRepository.getProducers( "1");
-      	java.lang.System.out.println("\n\n\n adv mpmConsumers2.size()="+mpmConsumers2.size());
-     	for ( Produce SystemTemp : mpmConsumers2) {
+      	System2Consumers2 = systemRepository.getProducers( "1");
+      	java.lang.System.out.println("\n\n\n adv System2Consumers2.size()="+System2Consumers2.size());
+     	for ( Produce SystemTemp : System2Consumers2) {
      		
      		java.lang.System.out.println(SystemTemp.getDatasetname());
      		
