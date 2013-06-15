@@ -201,38 +201,79 @@ public class SystemService {
 			logger.info("produceListFromRepo.size()="+produceListFromRepo.size());
 			
 			List<Object> adjlist = new ArrayList<Object>();
-			Map<String, Object> adjacencies = new HashMap<String, Object>();
 			
+			Map<String, Object> adjacenciesTemp = new HashMap<String, Object>();
+
 			for ( Produce produceConnectionTemp : produceListFromRepo) {
 				
 				logger.info(produceConnectionTemp.getDatasetname());
 				logger.info("SystemTemp-Producer>..."+produceConnectionTemp.getProducer().nodeId);
 		   		logger.info("SystemTemp-Consumer>..."+produceConnectionTemp.getConsumer().nodeId);
 
-		   		Map<String, Object> adjData = new HashMap<String, Object>();
-		   		List<Object> adjDatalist = new ArrayList<Object>();
+		   		String fromToKey = produceConnectionTemp.getProducer().nodeId + "." +produceConnectionTemp.getConsumer().nodeId;
+		   		logger.info("fromToKey="+fromToKey);
 		   		
-		   		adjDatalist.add(produceConnectionTemp.getDatasetname());
-		   		//adjData.put("data", adjDatalist);
-		   		
-		   		
-		   		System producerSystem = systemRepository.findOne(produceConnectionTemp.getProducer().nodeId);
-		   		logger.info("producerSystem->..."+producerSystem.getId() + ":" + producerSystem.getTitle());
-		   		
-		   		System consumerSystem = systemRepository.findOne(produceConnectionTemp.getConsumer().nodeId);
-		   		logger.info("consumerSystem->..."+consumerSystem.getId() + ":" + consumerSystem.getTitle());
+		   		//check if there exist same fromTo relation
+//		   		if ( adjacenciesTemp.containsKey(fromToKey)) {
+//		   			//get just the new data set
+//		   			List<Object> adjlisttemp = (ArrayList<Object>)adjacenciesTemp.get(fromToKey);
+//		   			HashMap<String, Object> adjattrTemp = (HashMap<String, Object>)adjlisttemp.get(0);
+//		   			Map<String, Object> dataSetMapTemp= (Map<String, Object>)adjattrTemp.get("data");
+//		   			List<Object> adjDatalistTemp = (List<Object>)dataSetMapTemp.get("dataset");
+//		   			
+//		   			// now add new dataset to adjDatalistTemp
+//		   			logger.info("Added new dataset...to, adjDatalistTemp.size()="+ adjDatalistTemp.size());
+//		   			adjDatalistTemp.add(produceConnectionTemp.getDatasetname());
+//		   			
+//		   			
+//		   			Map<String, Object> dataSetMap = new HashMap<String, Object>();
+//		   			dataSetMap.put("dataset", adjDatalistTemp);
+//			   		// dataset within data
+//		   			Map<String, Object> adjattr = new HashMap<String, Object>();
+//		   			adjattr.put("data", dataSetMapTemp );
+//			   		
+//			   		
+//			   		adjlist.add(adjattrTemp);
+//		   			
+//			   		adjacenciesTemp.put(fromToKey, adjlist);
+//			   		
+//		   		} else {
 
-		   		Map<String, Object> adjattr = new HashMap<String, Object>();
-		   		adjattr.put("nodeTo", consumerSystem.getId() );
-		   		adjattr.put("nodeFrom",producerSystem.getId() );
-		   		adjattr.put("data", adjDatalist );
-		   		
-		   		
-		   		adjlist.add(adjattr);
+			   		Map<String, Object> adjData = new HashMap<String, Object>();
+			   		List<Object> adjDatalist = new ArrayList<Object>();
+			   		
+			   		adjDatalist.add(produceConnectionTemp.getDatasetname());
+			   		//adjData.put("data", adjDatalist);
+			   		
+			   		
+			   		System producerSystem = systemRepository.findOne(produceConnectionTemp.getProducer().nodeId);
+			   		logger.info("producerSystem->..."+producerSystem.getId() + ":" + producerSystem.getTitle());
+			   		
+			   		System consumerSystem = systemRepository.findOne(produceConnectionTemp.getConsumer().nodeId);
+			   		logger.info("consumerSystem->..."+consumerSystem.getId() + ":" + consumerSystem.getTitle());
+
+			   		Map<String, Object> adjattr = new HashMap<String, Object>();
+			   		adjattr.put("nodeTo", consumerSystem.getId() );
+			   		adjattr.put("nodeFrom",producerSystem.getId() );
+			   		
+			   		Map<String, Object> dataSetMap = new HashMap<String, Object>();
+			   		dataSetMap.put("dataset", adjDatalist);
+			   		// dataset within data
+			   		adjattr.put("data", dataSetMap );
+			   		
+			   		
+			   		adjlist.add(adjattr);
+			   	
+			   		// hold data so as to find if there are any other same relation with diff data set
+			   		adjacenciesTemp.put(fromToKey, adjlist);
+		   		//}
+
+
 		   		
 			}	
-			//adjacencies.put("adjacencies", adjlist);
-			
+
+					
+			//systemConnectionMap.put("adjacencies",adjacenciesTemp.values() );					
 			systemConnectionMap.put("adjacencies",adjlist );
 			
 			//systemConnection.setAdjacencies(adjacencies);
@@ -242,8 +283,17 @@ public class SystemService {
 		}
 			
 		return json;
-		
+
 	}	
 
+	
+	public com.singpro.myapp.domain.System get(String id) {
+		
+		logger.info("get by id...");
+		
+		com.singpro.myapp.domain.System existingSystem = systemRepository.findById(id);
+		
+		return existingSystem;
+	}	
 	
 }
