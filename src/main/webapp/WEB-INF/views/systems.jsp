@@ -6,16 +6,17 @@
 <c:url value="/systems/delete" var="deleteUrl"/>
 <c:url value="/systems/connect" var="connectUrl"/>
 <c:url value="/systems/consumers" var="consumersUrl"/>
-
+<c:url value="/systems/record/" var="aRecordUrl"/>
 
 <html>
 <head>
+	<link rel='stylesheet' type='text/css' media='screen' href='<c:url value="/resources/css/demo_page.css"/>'/>
+	<link rel='stylesheet' type='text/css' media='screen' href='<c:url value="/resources/css/demo_table.css"/>'/>
 	<link rel='stylesheet' type='text/css' media='screen' href='<c:url value="/resources/css/style.css"/>'/>
-	<script type='text/javascript' src='<c:url value="/resources/js/jquery-1.6.4.min.js"/>'></script>
-	<script type='text/javascript' src='<c:url value="/resources/js/custom.js"/>'></script>
-
-	<title>User Records</title>
 	
+	<script type='text/javascript' src='<c:url value="/resources/js/jquery-2.0.2.min.js"/>'></script>
+	<script type='text/javascript' src='<c:url value="/resources/js/jquery.dataTables.js"/>'></script>
+	<script type='text/javascript' src='<c:url value="/resources/js/custom.js"/>'></script>
 	<script type='text/javascript'>
 	$(function() {
 		// init
@@ -25,6 +26,7 @@
 		urlHolder.del = '${deleteUrl}';
 		urlHolder.connect = '${connectUrl}';
 		urlHolder.consumers ='${consumersUrl}';
+		urlHolder.aRecord ='${aRecordUrl}';
 		
 		loadTable();
 		
@@ -103,25 +105,82 @@
 		});	
 		
 	});
+/* 	
+    var jsonList = {"Table" : [{"id" : "2","title" : "MPM21"},
+                               {"id" : "3","title" : "MPM22"},
+                               {"id" : "4","title" : "MPM23"},
+                                {"id" : "5","title" : "MPM42"},
+                                {"id" : "6","title" : "MPM52"}]}; */
+    
+
 	</script>
+
+	<title>User Records</title>
+	
+		<script type="text/javascript" charset="utf-8">
+			$(document).ready(function() {
+				//alert('lets call ajax to get data...');
+				//var 
+				var  oTable = $('#tableSystems').dataTable( {
+					"bProcessing": true,
+					"sAjaxSource": 'http://localhost:8080/myapp/systems/systemtable',
+					"bDestroy": true,
+					"bAutoWidth" : false, 
+					 "aoColumns":[
+						{"sWidth": '10%', "mDataProp": "id", bSearchable: false, bSortable: false},
+						{"sWidth": '25%', "mDataProp": "title"},
+						{"sWidth": '40%', "mDataProp": "description"}
+						],
+						"aoColumnDefs": [ {
+						      "aTargets": [ 0 ],
+						      //"mData": "download_link",
+						      "mRender": function ( data, type, full ) {
+						        //return '<a href="'+data+'">Download</a>';
+					        return '<input type="radio" name="index" id="index" value="'+data+'"/>' +
+					        '<input type="hidden" name="id" id="id" value="' + data + '"/>';
+						      }
+						    } ]	
+				} );
+				//alert(oTable);
+				
+				
+			} );
+		</script>
 </head>
 
 <body>
-	<h1 id='banner'>Adv Systems</h1>
+<div id="container">
+	<h3 id='banner'>Enterprise Systems Integration Tracker (ESIT)</h3>
 	<hr/>
-	
-	<table id='tableSystems'>
+	<div id="dynamic" style="width:100%">
+	<div id="dt_tableSystems" class="ex_highlight_row">
+	<table id='tableSystems' class="display" >
 		<caption></caption>
 		<thead>
 			<tr>
-				<th></th>
-				<th>Id</th>
-				<th>Title</th>
-				<th>Description</th>
+			<th width="10%">Select</th>
+			<th width="25%">Title</th>
+			<th width="40%">Description</th>
 			</tr>
 		</thead>
-	</table>
+	<tbody>
+		
+	</tbody>
+	<tfoot>
+<!-- 		<tr> -->
+<!-- 			<th>Id</th> -->
+<!-- 			<th>Title</th> -->
+<!-- 			<th>Description</th> -->
+<!-- 		</tr> -->
+	</tfoot>
 	
+	</table>
+	</div>
+	</div>
+	
+</div>	
+
+
 	<div id="divConsumers">
 		<table id='tableConsumers'>
 			<caption></caption>
@@ -136,7 +195,11 @@
 		</table>
 	</div>
 	
+	<div id='controlBar1'>
+	</div>
+
 	<div id='controlBar'>
+	<br><br>
 		<input type='button' value='New' id='newBtn' />
 		<input type='button' value='Delete' id='deleteBtn' />
 		<input type='button' value='Edit' id='editBtn' />
@@ -149,9 +212,9 @@
 		<form>
   			<fieldset>
 				<legend>New</legend>
-				<label for='newId'>Id</label><input type='text' id='id'/><br/>
-				<label for='newTitle'>Title</label><input type='text' id='title'/><br/>
-				<label for='newDescription'>Description</label><input type='text' id='description'/><br/>
+				<label for='newId'>Id</label><input type='text' id='newId'/><br/>
+				<label for='newTitle'>Title</label><input type='text' id='newTitle'/><br/>
+				<label for='newDescription'>Description</label><input type='text' id='newDescription'/><br/>
   			</fieldset>
 			<input type='button' value='Close' id='closeNewForm' />
 			<input type='submit' value='Submit'/>
@@ -178,7 +241,8 @@
 				<legend>Connect System</legend>
 				<input type='hidden' id='editUsername'/>
 				<label for='sourceId'>Source</label><input type='text' id='sourceId'/><br/>
-				<label for='destinationId'>Destination</label><input type='text' id='destinationId'/><br/>
+				<label for='destinationId'>Destination</label>
+				<select id="destinationId"></select><br/>
 				<label for='datasetname'>DataSet</label><input type='text' id='datasetname'/><br/>
 			</fieldset>	
 			<input type='button' value='Close' id='closeConnectForm' />
@@ -186,5 +250,6 @@
 		</form>
 	</div>
 	
+
 </body>
 </html>
