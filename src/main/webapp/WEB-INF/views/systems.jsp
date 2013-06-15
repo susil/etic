@@ -10,8 +10,8 @@
 
 <html>
 <head>
-	<link rel='stylesheet' type='text/css' media='screen' href='<c:url value="/resources/css/demo_page.css"/>'/>
-	<link rel='stylesheet' type='text/css' media='screen' href='<c:url value="/resources/css/demo_table.css"/>'/>
+	<link rel='stylesheet' type='text/css' media='screen' href='<c:url value="/resources/css/tdata_page.css"/>'/>
+	<link rel='stylesheet' type='text/css' media='screen' href='<c:url value="/resources/css/tdata_table.css"/>'/>
 	<link rel='stylesheet' type='text/css' media='screen' href='<c:url value="/resources/css/style.css"/>'/>
 	
 	<script type='text/javascript' src='<c:url value="/resources/js/jquery-2.0.2.min.js"/>'></script>
