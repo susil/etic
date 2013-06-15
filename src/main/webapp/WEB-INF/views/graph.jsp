@@ -22,8 +22,8 @@
 	<link type='text/css' rel='stylesheet' 	href='<c:url value="/resources/css/base.css"/>'/>
 	<link type='text/css' rel='stylesheet' 	href='<c:url value="/resources/css/ForceDirected.css"/>'/>
 	<script type='text/javascript' 			src='<c:url value="/resources/js/jit.js"/>'></script>
-	<script type='text/javascript' 			src='<c:url value="/resources/js/example2.js"/>'></script>
-	<script type='text/javascript' src='<c:url value="/resources/js/jquery-1.6.4.min.js"/>'></script>	
+	<script type='text/javascript' 			src='<c:url value="/resources/js/systemsgraphview.js"/>'></script>
+	<script type='text/javascript' src='<c:url value="/resources/js/jquery-2.0.2.min.js"/>'></script>	
 	
 </HEAD>
 <body onload="init();">
