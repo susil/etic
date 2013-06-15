@@ -3,6 +3,7 @@ package com.singpro.myapp.web;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -57,7 +58,7 @@ public class SystemController {
 		return service.read(system);
 	}
 
-	@RequestMapping(value = "/system/{id}", method = RequestMethod.GET )
+	@RequestMapping(value = "/recordno/{id}", method = RequestMethod.GET )
     public System singleSystemView(final Model model, @PathVariable String id) {
 
     	
@@ -97,7 +98,32 @@ public class SystemController {
 		
 		//return systemModel;
 	}    
-    
+
+	@RequestMapping(value = "/systemtable", method = RequestMethod.GET  )
+	public @ResponseBody HashMap<String, List<SystemDto>> getSystemsTable() {
+		
+//		UserListDto userListDto = new UserListDto();
+//		userListDto.setUsers(UserMapper.map(service.readAll()));
+//		return userListDto;
+		List<System> systemList = service.readAll();
+		SystemModel systemModel = new SystemModel();
+		systemModel.setSystems(systemList); 
+		
+		logger.info("node size="+systemList.size());
+		
+		SystemListDto systemListDto = new SystemListDto();
+		systemListDto.setSystems(SystemMapper.map(systemList));
+		HashMap<String, List<SystemDto>> mapOfList = new HashMap<String, List<SystemDto>>();
+		//for (  SystemDto systemDto : systemListDto.getSystems() ) {
+			
+		//}
+		mapOfList.put("aaData", systemListDto.getSystems() );
+		
+		return mapOfList;
+		
+		//return systemModel;
+	} 
+	
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
@@ -126,7 +152,7 @@ public class SystemController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value="/update", method=RequestMethod.POST )
-	public @ResponseBody System update(
+	public @ResponseBody SystemDto update(
 							@RequestParam String id,
 							@RequestParam String title,
 							@RequestParam String description
@@ -142,7 +168,9 @@ public class SystemController {
 		
 		newSystem = service.update(newSystem);
 		
-		return newSystem;
+		//return newSystem;
+		return SystemMapper.map(newSystem);
+		
 	}
 	
 	
@@ -228,6 +256,16 @@ public class SystemController {
 
 	}
 	
-	
+	@RequestMapping(value="/record/{id}", method=RequestMethod.GET )
+	public @ResponseBody SystemDto getExiting(
+							@PathVariable String id //@RequestParam String id
+			) {
+		logger.info("id"+id);
+		
+		System system = new System();
+		system = service.get(id);
+		
+		return SystemMapper.map(system);
+	}	
 	
 }

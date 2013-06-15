@@ -12,7 +12,8 @@ public class SystemMapper {
 	public static SystemDto map(System system) {
 			SystemDto dto = new SystemDto();
 			dto.setId(system.getId());
-			dto.setTitle(system.getTitle());
+			//dto.setTitle(system.getTitle()+":"+system.getId());
+			dto.setTitle(system.getTitle()+"::"+system.getId());
 			dto.setDescription(system.getDescription());
 			return dto;
 	}
