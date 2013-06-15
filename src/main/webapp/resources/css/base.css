@@ -20,16 +20,16 @@ h4 {
     font-size:1.1em;
     text-decoration:none;
     font-weight:normal;
-    color:#23A4FF;
+    color:#4E72BA;
 }
 
 a {
-    color:#23A4FF;
+    color:#4E72BA;
 }
 
 #container {
     width: 1000px;
-    height: 500px;
+    height: 600px;
     margin:0 auto;
     position:relative;
 }
@@ -37,7 +37,7 @@ a {
 #left-container, 
 #right-container, 
 #center-container {
-    height:500px;
+    height:600px;
     position:absolute;
     top:0;
 }
@@ -68,13 +68,13 @@ a {
 }
 
 #right-container h4{
-    text-indent:8px;
+    text-indent:2px;
 }
 
 #center-container {
     width:600px;
     left:200px;
-    background-color:#ACD5ED;
+    background-color:#D3ECDA;
     color:#ccc;
 }
 
@@ -93,7 +93,7 @@ a {
     top:10px;
     font-size:1.0em;
     font-weight:bold;
-    color:#23A4FF;
+    color:#4E72BA;
 }
 
 
