@@ -1,6 +1,6 @@
 body {
 	font-family: Arial, sans-serif;
-	width: 500px;
+	width: 1000px;
 	margin: auto;
 }
 
@@ -57,6 +57,7 @@ fieldset input, fieldset select {
 
 fieldset label {
 	float: left;
-	width: 80px;
+	width: 150px;
 	text-align: right;
+	margin-left: 10px;	
 }

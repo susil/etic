@@ -7,6 +7,7 @@
 <c:url value="/systems/connect" var="connectUrl"/>
 <c:url value="/systems/consumers" var="consumersUrl"/>
 <c:url value="/systems/record/" var="aRecordUrl"/>
+<c:url value="/systems/producers" var="producersUrl"/>
 
 <html>
 <head>
@@ -27,6 +28,7 @@
 		urlHolder.connect = '${connectUrl}';
 		urlHolder.consumers ='${consumersUrl}';
 		urlHolder.aRecord ='${aRecordUrl}';
+		urlHolder.producers ='${producersUrl}';
 		
 		loadTable();
 		
@@ -103,6 +105,18 @@
 				loadConsumerTable();
 			}
 		});	
+
+		
+		$('#producerBtn').click(function() { 
+			//alert('consumerBtn...')
+			if (hasSelected()) {
+				//alert('loadConsumerTable...')
+				
+				toggleForms('producer');
+				//toggleCrudButtons('hide');
+				loadProducerTable();
+			}
+		});	
 		
 	});
 /* 	
@@ -123,13 +137,21 @@
 				//var 
 				var  oTable = $('#tableSystems').dataTable( {
 					"bProcessing": true,
-					"sAjaxSource": 'http://localhost:8080/myapp/systems/systemtable',
+					"sAjaxSource": '/myapp/systems/systemtable',
 					"bDestroy": true,
 					"bAutoWidth" : false, 
 					 "aoColumns":[
-						{"sWidth": '10%', "mDataProp": "id", bSearchable: false, bSortable: false},
-						{"sWidth": '25%', "mDataProp": "title"},
-						{"sWidth": '40%', "mDataProp": "description"}
+						{"sWidth": '5%', "mDataProp": "id", bSearchable: false, bSortable: false},
+						{"sWidth": '20%', "mDataProp": "title"},
+						{"sWidth": '30%', "mDataProp": "description"},
+						{"sWidth": '10%', "mDataProp": "techcontact"},
+						{"sWidth": '10%', "mDataProp": "funccontact"},
+						{"sWidth": '10%', "mDataProp": "launchdate"},
+						{"sWidth": '5%', "mDataProp": "currentrelease"},
+						{"sWidth": '10%', "mDataProp": "currentreleaseddate"}
+					    						
+						
+						
 						],
 						"aoColumnDefs": [ {
 						      "aTargets": [ 0 ],
@@ -158,9 +180,15 @@
 		<caption></caption>
 		<thead>
 			<tr>
-			<th width="10%">Select</th>
-			<th width="25%">Title</th>
-			<th width="40%">Description</th>
+			<th width="5%">Select</th>
+			<th width="20%">Title</th>
+			<th width="30%">Description</th>
+		    <th width="10%">TechContact</th>
+		    <th width="10%">FuncContact</th>
+		    <th width="10%">LaunchDate</th>
+		    <th width="5%">CurrentRelease</th>
+		    <th width="10%">CurrentReleaseDate</th>			
+			
 			</tr>
 		</thead>
 	<tbody>
@@ -195,6 +223,20 @@
 		</table>
 	</div>
 	
+	<div id="divProducers">
+		<table id='tableProducers'>
+			<caption></caption>
+			<thead>
+				<tr>
+					<th></th>
+					<th>Consumer</th>
+					<th>Producer</th>
+					<th>Dataset</th>
+				</tr>
+			</thead>
+		</table>
+	</div>
+
 	<div id='controlBar1'>
 	</div>
 
@@ -205,16 +247,24 @@
 		<input type='button' value='Edit' id='editBtn' />
 		<input type='button' value='Reload' id='reloadBtn' />
 		<input type='button' value='Connect' id='connectBtn' />
-		<input type='button' value='Consumer' id='consumerBtn' />
+		<input type='button' value='Produces to' id='consumerBtn' />
+		<input type='button' value='Consumes from' id='producerBtn' />
 	</div>
 	
 	<div id='newForm'>
 		<form>
   			<fieldset>
 				<legend>New</legend>
-				<label for='newId'>Id</label><input type='text' id='newId'/><br/>
-				<label for='newTitle'>Title</label><input type='text' id='newTitle'/><br/>
-				<label for='newDescription'>Description</label><input type='text' id='newDescription'/><br/>
+				<label for='newId'>Id </label><input type='text' id='newId'/><br/>
+				<label for='newTitle'>Title </label><input type='text' id='newTitle'/><br/>
+				<label for='newDescription'>Description </label><input type='text' id='newDescription'/><br/>
+				<label for='newTechcontact'>TechContact </label><input type='text' id='newTechcontact'/><br/>
+				<label for='newFunccontact'>FuncContact </label><input type='text' id='newFunccontact'/><br/>
+				<label for='newLaunchdate'>LaunchDate </label><input type='text' id='newLaunchdate'/><br/>
+				<label for='newCurrentrelease'>CurrentRelease </label><input type='text' id='newCurrentrelease'/><br/>
+				<label for='newCurrentreleaseddate'>CurrentReleaseDate </label><input type='text' id='newCurrentreleaseddate'/><br/>
+				
+				
   			</fieldset>
 			<input type='button' value='Close' id='closeNewForm' />
 			<input type='submit' value='Submit'/>
@@ -228,7 +278,14 @@
 				<input type='hidden' id='editUsername'/>
 				<label for='editId'>id</label><input type='text' id='editId'/><br/>
 				<label for='editTitle'>Title</label><input type='text' id='editTitle'/><br/>
-				<label for='editDescription'>Descrition</label><input type='text' id='editDescription'/><br/>
+				<label for='editDescription'>Description</label><input type='text' id='editDescription'/><br/>
+
+				<label for='editTechcontact'>TechContact</label><input type='text' id='editTechcontact'/><br/>
+				<label for='editFunccontact'>FuncContact</label><input type='text' id='editFunccontact'/><br/>
+				<label for='editLaunchdate'>LaunchDate</label><input type='text' id='editLaunchdate'/><br/>
+				<label for='editCurrentrelease'>CurrentRelease</label><input type='text' id='editCurrentrelease'/><br/>
+				<label for='editCurrentreleaseddate'>CurrentReleaseDate</label><input type='text' id='editCurrentreleaseddate'/><br/>
+
 			</fieldset>	
 			<input type='button' value='Close' id='closeEditForm' />
 			<input type='submit' value='Submit'/>

@@ -24,13 +24,18 @@ function reloadtable()
 {
 	oTable = $('#tableSystems').dataTable( {
 		"bProcessing": true,
-		"sAjaxSource": 'http://localhost:8080/myapp/systems/systemtable',
+		"sAjaxSource": '/myapp/systems/systemtable',
 		"bDestroy": true,
 		"bAutoWidth" : false, 
 		 "aoColumns":[
-						{"sWidth": '10%', "mDataProp": "id", bSearchable: false, bSortable: false},
-						{"sWidth": '25%', "mDataProp": "title"},
-						{"sWidth": '40%', "mDataProp": "description"}
+						{"sWidth": '5%', "mDataProp": "id", bSearchable: false, bSortable: false},
+						{"sWidth": '20%', "mDataProp": "title"},
+						{"sWidth": '30%', "mDataProp": "description"},
+						{"sWidth": '10%', "mDataProp": "techcontact"},
+						{"sWidth": '10%', "mDataProp": "funccontact"},
+						{"sWidth": '10%', "mDataProp": "launchdate"},
+						{"sWidth": '5%', "mDataProp": "currentrelease"},
+						{"sWidth": '10%', "mDataProp": "currentreleaseddate"}
 			],
 			"aoColumnDefs": [ {
 			      "aTargets": [ 0 ],
@@ -108,6 +113,41 @@ function loadConsumerTable() {
  	});
 }
 
+
+function loadProducerTable() {
+	////#//alert('loading consumers...');
+	var selected = $('input:radio[name=index]:checked').val();
+	//$('#sourceId').val( $('#tableSystems').data('model')[selected].id );
+	//#//alert('selected='+selected);
+	$.get(urlHolder.producers, 
+			
+			{
+			//#//sourceId: $('#tableSystems').data('model')[selected].id
+			//$('#id').val()
+				sourceId:selected
+			},
+			function(response) {
+		
+		
+ 		$('#tableProducers').find('tbody').remove();
+ 		
+ 		for (var i=0; i<response.produces.length; i++) {
+			var row = '<tr>';
+			//row += '<td><input type="radio" name="index" id="index" value="'+i+'"></td>';
+			row += '<td></td>';
+			row += '<td>' + response.produces[i].producer.title + '</td>';
+			row += '<td>' + response.produces[i].consumer.title + '</td>';
+			row += '<td>' + response.produces[i].datasetname + '</td>';
+			row += '</tr>';
+	 		$('#tableProducers').append(row);
+ 		}
+ 		
+ 		$('#tableProducers').data('model', response.produces);
+		//toggleForms('hide');
+		
+ 	});
+}
+
 function submitNewRecord() {
 	
 	////#//alert('Step 2:'+ urlHolder.add+':'+$('#id').val()+':'+$('#title').val()+':'+$('#description').val());
@@ -115,7 +155,13 @@ function submitNewRecord() {
 	$.post(urlHolder.add, {
 			id: $('#newId').val(),
 			title: $('#newTitle').val(),
-			description: $('#newDescription').val()
+			description: $('#newDescription').val(),
+			techcontact:$('#newTechcontact').val(),
+			funccontact:$('#newFunccontact').val(),
+			launchdate:$('#newLaunchdate').val(),
+			currentrelease:$('#newCurrentrelease').val(),
+			currentreleaseddate:$('#newCurrentreleaseddate').val()
+			
 		}, 
 		function(response) {
 			if (response != null) {
@@ -152,7 +198,13 @@ function submitUpdateRecord() {
 	$.post(urlHolder.edit, {
 			id: $('#editId').val(),
 			title: $('#editTitle').val(),
-			description: $('#editDescription').val()
+			description: $('#editDescription').val(),
+			techcontact:$('#editTechcontact').val(),
+			funccontact:$('#editFunccontact').val(),
+			launchdate:$('#editLaunchdate').val(),
+			currentrelease:$('#editCurrentrelease').val(),
+			currentreleaseddate:$('#editCurrentreleaseddate').val()
+			
 		}, 
 		function(response) {
 			////#//alert(response.id );
@@ -191,7 +243,7 @@ function submitConnectRecord() {
 function hasSelected() {
 	var selected = $('input:radio[name=index]:checked').val();
 	if (selected == undefined) { 
-		//#//alert('Select a record first!');
+		alert('Select a record first!');
 		return false;
 	}
 	
@@ -212,6 +264,13 @@ function fillEditForm() {
 		$('#editId').val( aRecordResponse.id );
 		$('#editTitle').val( aRecordResponse.title );
 		$('#editDescription').val( aRecordResponse.description );
+
+		$('#editTechcontact').val( aRecordResponse.techcontact );
+		$('#editFunccontact').val( aRecordResponse.funccontact );
+		$('#editLaunchdate').val( aRecordResponse.launchdate );
+		$('#editCurrentrelease').val( aRecordResponse.currentrelease );
+		$('#editCurrentreleaseddate').val( aRecordResponse.currentreleaseddate );
+
 		
  	});
 	
@@ -247,12 +306,27 @@ function resetNewForm() {
 	$('#newId').val('');
 	$('#newTitle').val('');
 	$('#newDescription').val('');
+
+	$('#newTechcontact').val('');
+	$('#newFunccontact').val('');
+	$('#newLaunchdate').val('');
+	$('#newCurrentrelease').val('');
+	$('#newCurrentreleaseddate').val('');
+
+
 }
 
 function resetEditForm() {
 	$('#editId').val('');
 	$('#editTitle').val('');
 	$('#editDescription').val('');
+
+	$('#editTechcontact').val('');
+	$('#editFunccontact').val('');
+	$('#editLaunchdate').val('');
+	$('#editCurrentrelease').val('');
+	$('#editCurrentreleaseddate').val('');
+
 }
 
 function toggleForms(id) {
@@ -261,6 +335,7 @@ function toggleForms(id) {
 		$('#editForm').hide();
 		$('#connectForm').hide();
 		$("#divConsumers").hide();
+		$("#divProducers").hide();
 		////#//alert('hide all forms...');
 		
 	} else if (id == 'new') {
@@ -284,7 +359,16 @@ function toggleForms(id) {
  		$('#newForm').hide();
  		$('#editForm').hide();
  		$('#connectForm').hide();
+		$("#divProducers").hide();
  		$("#divConsumers").show();
+	}
+	else if (id == 'producer') {
+ 		resetEditForm();
+ 		$('#newForm').hide();
+ 		$('#editForm').hide();
+ 		$('#connectForm').hide();
+		$("#divConsumers").hide();
+ 		$("#divProducers").show();
 	}
 }
 
