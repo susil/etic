@@ -79,6 +79,12 @@ public class SystemService {
 		existingSystem.setTitle(system.getTitle());
 		existingSystem.setDescription(system.getDescription());
 		
+		existingSystem.setTechcontact(system.getTechcontact());
+		existingSystem.setFunccontact(system.getFunccontact());
+		existingSystem.setLaunchdate(system.getLaunchdate());
+		existingSystem.setCurrentrelease(system.getCurrentrelease());
+		existingSystem.setCurrentreleaseddate(system.getCurrentreleaseddate());
+		
 		return systemRepository.save(existingSystem);
 	}
 	
@@ -295,5 +301,50 @@ public class SystemService {
 		
 		return existingSystem;
 	}	
+
+	
+	
+	public ProduceListDto getAllConnectWhereSystemIsConsumer(String sourceId) {
+		
+		logger.info("getAllConnectWhereSystemIsConsumer...");
+		
+		ProduceListDto produceListDto = new ProduceListDto();
+		List<ProduceDto> produces = new ArrayList<ProduceDto>();
+				 
+		
+		com.singpro.myapp.domain.System sourceSystem =systemRepository.findById(sourceId); //consumer here
+		logger.info("sourceSystem ="+sourceSystem.getDescription());
+ 	
+		List<Produce> produceListFromRepo 
+			= systemRepository.getAllProduceRelationWhereSystemIsConsumer( sourceSystem );
+		logger.info("produceListFromRepo.size()="+produceListFromRepo.size());
+		
+		for ( Produce produceConnectionTemp : produceListFromRepo) {
+			logger.info(produceConnectionTemp.getDatasetname());
+	   		logger.info("SystemTemp-Producer>..."+produceConnectionTemp.getProducer().nodeId);
+	   		logger.info("SystemTemp-Consumer>..."+produceConnectionTemp.getConsumer().nodeId);
+	   		
+	   		System consumerSystem = systemRepository.findOne(produceConnectionTemp.getProducer().nodeId);
+	   		logger.info("consumerSystem->..."+consumerSystem.getId() + ":" + consumerSystem.getDescription());
+	   		
+	   		System producerSystem = systemRepository.findOne(produceConnectionTemp.getConsumer().nodeId);
+	   		logger.info("producerSystem->..."+producerSystem.getId() + ":" + producerSystem.getDescription());
+	   		
+	   		ProduceDto produceDto = new ProduceDto();
+	   		produceDto.setDatasetname(produceConnectionTemp.getDatasetname());
+	   		produceDto.setProducer(SystemMapper.map(producerSystem) );
+	   		produceDto.setConsumer(SystemMapper.map(consumerSystem) );
+	   		
+			//com.singpro.myapp.domain.System sourceSystem =systemRepository.findById(sourceId);
+	   		produces.add(produceDto);
+		}
+		
+		produceListDto.setProduces(produces);
+		return produceListDto;
+		
+		//return produceListFromRepo;
+	}
+	
+	
 	
 }

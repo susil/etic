@@ -1,6 +1,7 @@
 package com.singpro.myapp.web;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -131,7 +132,12 @@ public class SystemController {
 	public @ResponseBody System create(
 							@RequestParam String id,
 							@RequestParam String title,
-							@RequestParam String description
+							@RequestParam String description,
+							@RequestParam String techcontact,
+							@RequestParam String funccontact,
+							@RequestParam String launchdate,
+							@RequestParam String currentrelease,
+							@RequestParam String currentreleaseddate
 			) {
 		logger.info("id"+id);
 		logger.info("title"+title);
@@ -141,6 +147,27 @@ public class SystemController {
 		newSystem.setId(id);
 		newSystem.setTitle(title);
 		newSystem.setDescription(description);
+		
+		SimpleDateFormat df = new SimpleDateFormat("mm/dd/yyyy");
+		Date launchDateTemp = null;
+		Date currentReleaseDateTemp = null;
+		try {
+			if ( (launchdate != null ) &&  (launchdate.trim().length() > 6) )
+				launchDateTemp = df.parse(launchdate);
+			if ( (currentreleaseddate != null ) &&  (currentreleaseddate.trim().length() > 6) )
+				currentReleaseDateTemp = df.parse(currentreleaseddate);
+		}
+		catch ( Exception exp ) {
+			exp.printStackTrace();
+		}
+		
+		
+		newSystem.setTechcontact(techcontact);
+		newSystem.setFunccontact(funccontact);
+		newSystem.setLaunchdate(launchDateTemp);
+		newSystem.setCurrentrelease(currentrelease);
+		newSystem.setCurrentreleaseddate(currentReleaseDateTemp);
+		
 		
 		newSystem = service.create(newSystem);
 		
@@ -155,7 +182,12 @@ public class SystemController {
 	public @ResponseBody SystemDto update(
 							@RequestParam String id,
 							@RequestParam String title,
-							@RequestParam String description
+							@RequestParam String description,
+							@RequestParam String techcontact,
+							@RequestParam String funccontact,
+							@RequestParam String launchdate,
+							@RequestParam String currentrelease,
+							@RequestParam String currentreleaseddate
 			) {
 		logger.info("id"+id);
 		logger.info("title"+title);
@@ -165,6 +197,25 @@ public class SystemController {
 		newSystem.setId(id);
 		newSystem.setTitle(title);
 		newSystem.setDescription(description);
+		
+		SimpleDateFormat df = new SimpleDateFormat("mm/dd/yyyy");
+		Date launchDateTemp = null;
+		Date currentReleaseDateTemp = null;
+		try {
+			if ( (launchdate != null ) &&  (launchdate.trim().length() > 6) )
+				launchDateTemp = df.parse(launchdate);
+			if ( (currentreleaseddate != null ) &&  (currentreleaseddate.trim().length() > 6) )
+				currentReleaseDateTemp = df.parse(currentreleaseddate);
+		}
+		catch ( Exception exp ) {
+			exp.printStackTrace();
+		}	
+		newSystem.setTechcontact(techcontact);
+		newSystem.setFunccontact(funccontact);
+		newSystem.setLaunchdate(launchDateTemp);
+		newSystem.setCurrentrelease(currentrelease);
+		newSystem.setCurrentreleaseddate(currentReleaseDateTemp);
+		
 		
 		newSystem = service.update(newSystem);
 		
@@ -267,5 +318,26 @@ public class SystemController {
 		
 		return SystemMapper.map(system);
 	}	
+
+	
+	@RequestMapping(value="/producers", method=RequestMethod.GET )
+	public @ResponseBody ProduceListDto getAllConsumerConnection(
+			@RequestParam String sourceId
+		) {
+		
+		logger.info("getAllConsumerConnection...");
+		logger.info("sourceId"+sourceId);
+		ProduceListDto produceListDto= service.getAllConnectWhereSystemIsConsumer(sourceId);
+
+		for (ProduceDto p : produceListDto.getProduces() ) {
+		logger.info("consumer="+p.getProducer().getTitle());
+		logger.info("producer="+p.getConsumer().getTitle());
+		}
+		
+		return produceListDto;
+	}
+	
+	
+	
 	
 }

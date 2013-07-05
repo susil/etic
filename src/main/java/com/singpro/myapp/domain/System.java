@@ -33,8 +33,12 @@ public class System {
 	@Indexed(indexType=IndexType.FULLTEXT, indexName = "search")
     String title;
     String description;
-
-
+    String techcontact;
+    String funccontact;
+    Date launchdate;
+    String currentrelease;
+    Date currentreleaseddate;
+    
     @RelatedToVia(type = "CONNECT_FROM", direction = Direction.OUTGOING )
     Set<Consume> consumelist;
 
@@ -97,6 +101,57 @@ public class System {
 		this.producelist = producelist;
 	}
 
+	
+	
+	public Long getNodeId() {
+		return nodeId;
+	}
+
+	public void setNodeId(Long nodeId) {
+		this.nodeId = nodeId;
+	}
+
+	public String getTechcontact() {
+		return techcontact;
+	}
+
+	public void setTechcontact(String techcontact) {
+		this.techcontact = techcontact;
+	}
+
+	public String getFunccontact() {
+		return funccontact;
+	}
+
+	public void setFunccontact(String funccontact) {
+		this.funccontact = funccontact;
+	}
+
+	public Date getLaunchdate() {
+		return launchdate;
+	}
+
+	public void setLaunchdate(Date launchdate) {
+		this.launchdate = launchdate;
+	}
+
+	public String getCurrentrelease() {
+		return currentrelease;
+	}
+
+	public void setCurrentrelease(String currentrelease) {
+		this.currentrelease = currentrelease;
+	}
+
+	public Date getCurrentreleaseddate() {
+		return currentreleaseddate;
+	}
+
+	public void setCurrentreleaseddate(Date currentreleaseddate) {
+		this.currentreleaseddate = currentreleaseddate;
+	}
+
+	//////Common metho
 	@Override
     public boolean equals(Object o) {
         if (this == o) return true;

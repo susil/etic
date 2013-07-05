@@ -89,4 +89,13 @@ public interface SystemRepository extends GraphRepository<System>,
 	 )
 	  List<Produce> getProducers(@Param("id") String id);		
 
+	  
+	  @Query( 		
+	  " START p=node({adv1}) " +
+	  " MATCH (c)-[relation:CONNECT_TO]->(p) " +
+	  " RETURN relation " 
+	)
+	  List<Produce> getAllProduceRelationWhereSystemIsConsumer(@Param("adv1") System adv1 );		  
+	  
+	  
 }

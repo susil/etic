@@ -2,6 +2,7 @@ package com.singpro.myapp.web;
 
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.singpro.myapp.domain.System;
@@ -13,8 +14,16 @@ public class SystemMapper {
 			SystemDto dto = new SystemDto();
 			dto.setId(system.getId());
 			//dto.setTitle(system.getTitle()+":"+system.getId());
-			dto.setTitle(system.getTitle()+"::"+system.getId());
+			//dto.setTitle(system.getTitle()+"::"+system.getId());
+			dto.setTitle(system.getTitle());
 			dto.setDescription(system.getDescription());
+			
+		    dto.setTechcontact(system.getTechcontact());
+		    dto.setFunccontact(system.getFunccontact());
+		    dto.setLaunchdate(system.getLaunchdate());
+		    dto.setCurrentrelease(system.getCurrentrelease());
+		    dto.setCurrentreleaseddate(system.getCurrentreleaseddate());
+			
 			return dto;
 	}
 	
