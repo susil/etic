@@ -3,6 +3,7 @@ package com.singpro.myapp.web;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -148,7 +149,7 @@ public class SystemController {
 		newSystem.setTitle(title);
 		newSystem.setDescription(description);
 		
-		SimpleDateFormat df = new SimpleDateFormat("mm/dd/yyyy");
+		SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
 		Date launchDateTemp = null;
 		Date currentReleaseDateTemp = null;
 		try {
@@ -192,13 +193,14 @@ public class SystemController {
 		logger.info("id"+id);
 		logger.info("title"+title);
 		logger.info("description"+description);
+		logger.info("launchdate"+launchdate);
 		
 		System newSystem = new System();
 		newSystem.setId(id);
 		newSystem.setTitle(title);
 		newSystem.setDescription(description);
 		
-		SimpleDateFormat df = new SimpleDateFormat("mm/dd/yyyy");
+		SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
 		Date launchDateTemp = null;
 		Date currentReleaseDateTemp = null;
 		try {
@@ -210,6 +212,11 @@ public class SystemController {
 		catch ( Exception exp ) {
 			exp.printStackTrace();
 		}	
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(launchDateTemp);
+		int month = cal.get(Calendar.MONTH) ;
+		logger.info( "Month to be saved="+String.valueOf(month)  );
+		
 		newSystem.setTechcontact(techcontact);
 		newSystem.setFunccontact(funccontact);
 		newSystem.setLaunchdate(launchDateTemp);
