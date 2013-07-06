@@ -1,6 +1,7 @@
 package com.singpro.myapp.service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -298,7 +299,10 @@ public class SystemService {
 		logger.info("get by id...");
 		
 		com.singpro.myapp.domain.System existingSystem = systemRepository.findById(id);
-		
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(existingSystem.getLaunchdate());
+		int month = cal.get(Calendar.MONTH) ;
+		logger.info( "Getting month="+String.valueOf(month)  );
 		return existingSystem;
 	}	
 
