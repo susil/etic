@@ -14,12 +14,57 @@
 	<link rel='stylesheet' type='text/css' media='screen' href='<c:url value="/resources/css/tdata_page.css"/>'/>
 	<link rel='stylesheet' type='text/css' media='screen' href='<c:url value="/resources/css/tdata_table.css"/>'/>
 	<link rel='stylesheet' type='text/css' media='screen' href='<c:url value="/resources/css/style.css"/>'/>
-	
+
+ 	<link rel='stylesheet' type='text/css' media='screen' href='<c:url value="/resources/css/jquery-ui-1.10.3.custom.css"/>'/>
+
 	<script type='text/javascript' src='<c:url value="/resources/js/jquery-2.0.2.min.js"/>'></script>
 	<script type='text/javascript' src='<c:url value="/resources/js/jquery.dataTables.js"/>'></script>
 	<script type='text/javascript' src='<c:url value="/resources/js/custom.js"/>'></script>
+	
+	<!-- Place jquery UI need to go after JQuerry call -->
+	<script type='text/javascript' src='<c:url value="/resources/js/jquery-ui-1.10.3.custom.js"/>'></script>
+	
+	
 	<script type='text/javascript'>
+	
+	
+	
+	
 	$(function() {
+		
+		 $( "#tabs" ).tabs();
+		 
+  	    $( "#newLaunchdate" ).datepicker({
+	    	autoSize: true,
+	        showOn: "button",
+	        buttonImage: "resources/images/calendar.gif",
+	        buttonImageOnly: true
+	      });  
+  	    
+  	    $( "#editLaunchdate" ).datepicker({
+	    	autoSize: true,
+	        showOn: "button",
+	        buttonImage: "resources/images/calendar.gif",
+	        buttonImageOnly: true
+	      });  
+  	    
+  	  
+	    $( "#editCurrentreleaseddate" ).datepicker({
+	    	autoSize: true,
+	        showOn: "button",
+	        buttonImage: "resources/images/calendar.gif",
+	        buttonImageOnly: true
+	      });  	  
+	    $( "#newCurrentreleaseddate" ).datepicker({
+	    	autoSize: true,
+	        showOn: "button",
+	        buttonImage: "resources/images/calendar.gif",
+	        buttonImageOnly: true
+	      });  	  
+  	    
+	    //http://localhost:8080/myapp/images/calendar.gif
+	    //http://localhost:8080/myapp/images/calendar.gif
+	    
 		// init
 		urlHolder.records = '${recordsUrl}';
 		urlHolder.add = '${addUrl}';
@@ -126,8 +171,69 @@
                                 {"id" : "5","title" : "MPM42"},
                                 {"id" : "6","title" : "MPM52"}]}; */
     
+/*                             	jQuery.fn.dataTableExt.oSort['date-us-asc']  = function(a,b) {  
+                            	    //use text()
+                            	    var ukDatea = $(a).text().split('/');
+                            	    var ukDateb = $(b).text().split('/');
 
-	</script>
+                            	    var x = (ukDatea[2] + ukDatea[1] + ukDatea[0]) * 1;
+                            	    var y = (ukDateb[2] + ukDateb[1] + ukDateb[0]) * 1;
+
+                            	    return ((x < y) ? -1 : ((x > y) ?  1 : 0));
+                            	};
+
+                            	jQuery.fn.dataTableExt.oSort['date-us-desc'] = function(a,b) {
+                            	    //use text()
+                            	    var ukDatea = $(a).text().split('/');
+                            	    var ukDateb = $(b).text().split('/');
+
+                            	    var x = (ukDatea[2] + ukDatea[1] + ukDatea[0]) * 1;
+                            	    var y = (ukDateb[2] + ukDateb[1] + ukDateb[0]) * 1;
+
+                            	    return ((x < y) ? 1 : ((x > y) ?  -1 : 0));
+                            	}    */                         	
+ 
+                            	
+/*            	jQuery.extend( jQuery.fn.dataTableExt.oSort, {
+           		   "date-us-pre": function ( a ) {
+           		       var b = a.match(/(\d{1,2})\/(\d{1,2})\/(\d{2,4})/),
+           		           month = b[1],
+           		           day = b[2],
+           		           year = b[3];
+           		 
+           		 
+           		       if(year.length == 2){
+           		           if(parseInt(year, 10)<70) year = '20'+year;
+           		           else year = '19'+year;
+           		       }
+           		       if(month.length == 1) month = '0'+month;
+           		       if(day.length == 1) day = '0'+day;
+           		 
+           		       var tt = year+month+day;
+           		       return  tt;
+           		   },
+           		   "date-us-asc": function ( a, b ) {
+           		       return a - b;
+           		   },
+           		 
+           		   "date-us-desc": function ( a, b ) {
+           		       return b - a;
+           		   }
+           		});
+           		 
+           		jQuery.fn.dataTableExt.aTypes.unshift(
+           		   function ( sData )
+           		   {
+           		       if (sData !== null && sData.match(/\d{1,2}\/\d{1,2}\/\d{2,4}/))
+           		       {
+           		 
+           		           return 'date-us';
+           		       }
+           		       return null;
+           		   }
+           		);   */                          	
+                            	
+</script>
 
 	<title>User Records</title>
 	
@@ -146,9 +252,27 @@
 						{"sWidth": '30%', "mDataProp": "description"},
 						{"sWidth": '10%', "mDataProp": "techcontact"},
 						{"sWidth": '10%', "mDataProp": "funccontact"},
-						{"sWidth": '10%', "mDataProp": "launchdate"},
+						{"sWidth": '10%', "mDataProp": "launchdate", "sType": "date-us"
+							,    
+							"mRender": function ( data, type, full ) {
+							var javascriptDate = new Date(data);
+							var monthInt = javascriptDate.getMonth() + 1;
+							  javascriptDate = monthInt+"/"+javascriptDate.getDate()+"/"+javascriptDate.getFullYear();
+							return "<div class= date>"+javascriptDate+"<div>";
+				              } 							
+						
+						},
 						{"sWidth": '5%', "mDataProp": "currentrelease"},
-						{"sWidth": '10%', "mDataProp": "currentreleaseddate"}
+						{"sWidth": '10%', "mDataProp": "currentreleaseddate"
+							,    
+							"mRender": function ( data, type, full ) {
+							var javascriptDate = new Date(data);
+							var monthInt = javascriptDate.getMonth() + 1;
+							  javascriptDate = monthInt+"/"+javascriptDate.getDate()+"/"+javascriptDate.getFullYear();
+							return "<div class= date>"+javascriptDate+"<div>";
+							}
+
+						}
 					    						
 						
 						
@@ -171,8 +295,8 @@
 </head>
 
 <body>
+
 <div id="container">
-	<h3 id='banner'>Enterprise Systems Integration Tracker (ESIT)</h3>
 	<hr/>
 	<div id="dynamic" style="width:100%">
 	<div id="dt_tableSystems" class="ex_highlight_row">
@@ -183,11 +307,11 @@
 			<th width="5%">Select</th>
 			<th width="20%">Title</th>
 			<th width="30%">Description</th>
-		    <th width="10%">TechContact</th>
-		    <th width="10%">FuncContact</th>
-		    <th width="10%">LaunchDate</th>
-		    <th width="5%">CurrentRelease</th>
-		    <th width="10%">CurrentReleaseDate</th>			
+		    <th width="10%">Technical Contact</th>
+		    <th width="10%">Functional Contact</th>
+		    <th width="10%">Launch Date</th>
+		    <th width="5%">Current Release</th>
+		    <th width="10%">Current Release Date</th>			
 			
 			</tr>
 		</thead>
@@ -258,11 +382,11 @@
 				<label for='newId'>Id </label><input type='text' id='newId'/><br/>
 				<label for='newTitle'>Title </label><input type='text' id='newTitle'/><br/>
 				<label for='newDescription'>Description </label><input type='text' id='newDescription'/><br/>
-				<label for='newTechcontact'>TechContact </label><input type='text' id='newTechcontact'/><br/>
-				<label for='newFunccontact'>FuncContact </label><input type='text' id='newFunccontact'/><br/>
-				<label for='newLaunchdate'>LaunchDate </label><input type='text' id='newLaunchdate'/><br/>
-				<label for='newCurrentrelease'>CurrentRelease </label><input type='text' id='newCurrentrelease'/><br/>
-				<label for='newCurrentreleaseddate'>CurrentReleaseDate </label><input type='text' id='newCurrentreleaseddate'/><br/>
+				<label for='newTechcontact'>Technical Contact </label><input type='text' id='newTechcontact'/><br/>
+				<label for='newFunccontact'>Functional Contact </label><input type='text' id='newFunccontact'/><br/>
+				<label for='newLaunchdate'>Launch Date </label><input type='text' id='newLaunchdate'/><br/>
+				<label for='newCurrentrelease'>Current Release </label><input type='text' id='newCurrentrelease'/><br/>
+				<label for='newCurrentreleaseddate'>Current Release Date </label><input type='text' id='newCurrentreleaseddate'/><br/>
 				
 				
   			</fieldset>
@@ -276,15 +400,15 @@
   			<fieldset>
 				<legend>Edit Record</legend>
 				<input type='hidden' id='editUsername'/>
-				<label for='editId'>id</label><input type='text' id='editId'/><br/>
+				<label for='editId'>Id</label><input type='text' id='editId'/><br/>
 				<label for='editTitle'>Title</label><input type='text' id='editTitle'/><br/>
 				<label for='editDescription'>Description</label><input type='text' id='editDescription'/><br/>
 
-				<label for='editTechcontact'>TechContact</label><input type='text' id='editTechcontact'/><br/>
-				<label for='editFunccontact'>FuncContact</label><input type='text' id='editFunccontact'/><br/>
-				<label for='editLaunchdate'>LaunchDate</label><input type='text' id='editLaunchdate'/><br/>
-				<label for='editCurrentrelease'>CurrentRelease</label><input type='text' id='editCurrentrelease'/><br/>
-				<label for='editCurrentreleaseddate'>CurrentReleaseDate</label><input type='text' id='editCurrentreleaseddate'/><br/>
+				<label for='editTechcontact'>Technical Contact</label><input type='text' id='editTechcontact'/><br/>
+				<label for='editFunccontact'>Functional Contact</label><input type='text' id='editFunccontact'/><br/>
+				<label for='editLaunchdate'>Launch Date</label><input type='text' id='editLaunchdate'/><br/>
+				<label for='editCurrentrelease'>Current Release</label><input type='text' id='editCurrentrelease'/><br/>
+				<label for='editCurrentreleaseddate'>Current Release Date</label><input type='text' id='editCurrentreleaseddate'/><br/>
 
 			</fieldset>	
 			<input type='button' value='Close' id='closeEditForm' />
@@ -307,6 +431,7 @@
 		</form>
 	</div>
 	
+
 
 </body>
 </html>
