@@ -33,9 +33,25 @@ function reloadtable()
 						{"sWidth": '30%', "mDataProp": "description"},
 						{"sWidth": '10%', "mDataProp": "techcontact"},
 						{"sWidth": '10%', "mDataProp": "funccontact"},
-						{"sWidth": '10%', "mDataProp": "launchdate"},
+						{"sWidth": '10%', "mDataProp": "launchdate" , "sType": "date-us"
+							,    
+							"mRender": function ( data, type, full ) {
+				              var javascriptDate = new Date(data);
+							  var monthInt = javascriptDate.getMonth() + 1;
+							  javascriptDate = monthInt+"/"+javascriptDate.getDate()+"/"+javascriptDate.getFullYear();
+				              return "<div class= date>"+javascriptDate+"<div>";
+				              } 							
+						},
 						{"sWidth": '5%', "mDataProp": "currentrelease"},
-						{"sWidth": '10%', "mDataProp": "currentreleaseddate"}
+						{"sWidth": '10%', "mDataProp": "currentreleaseddate", "sType": "date-us"
+							,    
+							"mRender": function ( data, type, full ) {
+				              var javascriptDate = new Date(data);
+							  var monthInt = javascriptDate.getMonth() + 1;
+							  javascriptDate = monthInt+"/"+javascriptDate.getDate()+"/"+javascriptDate.getFullYear();
+				              return "<div class= date>"+javascriptDate+"<div>";
+				              } 							
+						}
 			],
 			"aoColumnDefs": [ {
 			      "aTargets": [ 0 ],
@@ -54,6 +70,68 @@ function reloadtable()
 //		  } );
 	  
 	  //initTable();
+	
+	
+//	jQuery.fn.dataTableExt.oSort['date-us-asc']  = function(a,b) {  
+//	    //use text()
+//	    var ukDatea = $(a).text().split('/');
+//	    var ukDateb = $(b).text().split('/');
+//
+//	    var x = (ukDatea[2] + ukDatea[1] + ukDatea[0]) * 1;
+//	    var y = (ukDateb[2] + ukDateb[1] + ukDateb[0]) * 1;
+//	    return ((x < y) ? -1 : ((x > y) ?  1 : 0));
+//	};
+//
+//	jQuery.fn.dataTableExt.oSort['date-us-desc'] = function(a,b) {
+//	    //use text()
+//	    var ukDatea = $(a).text().split('/');
+//	    var ukDateb = $(b).text().split('/');
+//
+//	    var x = (ukDatea[2] + ukDatea[1] + ukDatea[0]) * 1;
+//	    var y = (ukDateb[2] + ukDateb[1] + ukDateb[0]) * 1;
+//
+//	    return ((x < y) ? 1 : ((x > y) ?  -1 : 0));
+//	} 
+	
+   	jQuery.extend( jQuery.fn.dataTableExt.oSort, {
+		   "date-us-pre": function ( a ) {
+		       var b = a.match(/(\d{1,2})\/(\d{1,2})\/(\d{2,4})/),
+		           month = b[1],
+		           day = b[2],
+		           year = b[3];
+		 
+		 
+		       if(year.length == 2){
+		           if(parseInt(year, 10)<70) year = '20'+year;
+		           else year = '19'+year;
+		       }
+		       if(month.length == 1) month = '0'+month;
+		       if(day.length == 1) day = '0'+day;
+		 
+		       var tt = year+month+day;
+		       return  tt;
+		   },
+		   "date-us-asc": function ( a, b ) {
+		       return a - b;
+		   },
+		 
+		   "date-us-desc": function ( a, b ) {
+		       return b - a;
+		   }
+		});
+		 
+		jQuery.fn.dataTableExt.aTypes.unshift(
+		   function ( sData )
+		   {
+		       if (sData !== null && sData.match(/\d{1,2}\/\d{1,2}\/\d{2,4}/))
+		       {
+		 
+		           return 'date-us';
+		       }
+		       return null;
+		   }
+		);  	
+	
 }
 
 function loadTable() {
@@ -267,9 +345,24 @@ function fillEditForm() {
 
 		$('#editTechcontact').val( aRecordResponse.techcontact );
 		$('#editFunccontact').val( aRecordResponse.funccontact );
-		$('#editLaunchdate').val( aRecordResponse.launchdate );
+		$('#editLaunchdate').val( 
+				function (c ) {
+					var javascriptDate = new Date(aRecordResponse.launchdate);
+					var monthInt = javascriptDate.getMonth() + 1;
+					  javascriptDate = monthInt+"/"+javascriptDate.getDate()+"/"+javascriptDate.getFullYear();
+					return javascriptDate;
+				}
+				 );
 		$('#editCurrentrelease').val( aRecordResponse.currentrelease );
-		$('#editCurrentreleaseddate').val( aRecordResponse.currentreleaseddate );
+		$('#editCurrentreleaseddate').val( 
+				function (c ) {
+					var javascriptDate = new Date(aRecordResponse.currentreleaseddate);
+					var monthInt = javascriptDate.getMonth() + 1;
+					  javascriptDate = monthInt+"/"+javascriptDate.getDate()+"/"+javascriptDate.getFullYear();
+					return javascriptDate;
+				}
+		
+		);
 
 		
  	});
