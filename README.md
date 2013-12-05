@@ -8,7 +8,7 @@ Below are some other hightlights that this project shows;
 - Use of Spring-Data-Neo4j for effectively using Neo4J repository
 - Use of Cypher Query language for Neo4J DDL and DML operation
 - Use of Maven for development management
-- Use of JavaScript based UI Visualization for graph data
+- Use of JavaScript based UI Visualization for graph data 
 
 
 
